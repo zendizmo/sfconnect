@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/database");
-const pg = require("pg");
+const { Client } = require("pg");
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -22,13 +22,14 @@ app.get("/db", (req, res) => {
 async function callDbAsync(res) {
   try {
     let isServer = false;
+
     console.log(process.env.DATABASE_URL);
     if (process.env.DATABASE_URL) {
       isServer = true;
     }
     const conString = process.env.DATABASE_URL || config.DATABASE_URL;
     console.log(conString);
-    const client = new pg.Client({ conString, ssl: isServer });
+    const client = new Client({ conString, ssl: isServer });
     await client.connect();
     var dbRes = await client.query(
       "SELECT Id, Name, AccountNumber FROM salesforce.account;"
