@@ -16,9 +16,9 @@ const accounts = require("./routes/accounts");
 app.use("/api/accounts", accounts);
 
 app.get("/db", (req, res) => {
-  callDbAsync(res);
+  callDb(res);
 });
-function callDbAsync(res) {
+function callDb(res) {
   try {
     const connectionString = process.env.DATABASE_URL;
     const client = new Client({
@@ -27,8 +27,11 @@ function callDbAsync(res) {
     client.connect();
     client.query(
       "SELECT Id, Name, AccountNumber FROM salesforce.account",
-      (err, res) => {
+      (err, dbRes) => {
         console.log(err, res);
+        res.render("db", {
+          results: dbRes.rows
+        });
         client.end();
       }
     );
