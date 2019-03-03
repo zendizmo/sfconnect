@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/database");
-const pg = require("pg");
+const { Client } = require("pg");
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
