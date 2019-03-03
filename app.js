@@ -22,14 +22,16 @@ app.get("/db", (req, res) => {
 async function callDbAsync(res) {
   try {
     let isServer = false;
+    console.log(process.env.DATABASE_URL);
     if (process.env.DATABASE_URL) {
       isServer = true;
     }
     const conString = process.env.DATABASE_URL || config.DATABASE_URL;
+    console.log(conString);
     const client = new pg.Client({ conString, ssl: isServer });
     await client.connect();
     var dbRes = await client.query(
-      "SELECT Id, Name, AccountNumber FROM salesforce.account"
+      "SELECT Id, Name, AccountNumber FROM salesforce.account;"
     );
     res.render("db", {
       results: dbRes.rows
