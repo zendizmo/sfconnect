@@ -27,7 +27,7 @@ async function callDbAsync(res) {
     if (process.env.DATABASE_URL) {
       isServer = true;
     }
-    const conString = process.env.DATABASE_URL || config.DATABASE_URL;
+    const conString = process.env.DATABASE_URL;
     console.log(conString);
     const client = new Client({ conString, ssl: isServer });
     await client.connect();
