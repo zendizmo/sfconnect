@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/database");
-const { Client } = require("pg");
+const { Pool, Client } = require("pg");
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -18,26 +18,20 @@ app.use("/api/accounts", accounts);
 app.get("/db", (req, res) => {
   callDbAsync(res);
 });
-
-async function callDbAsync(res) {
+function callDbAsync(res) {
   try {
-    let isServer = false;
-
-    console.log(process.env.DATABASE_URL);
-    if (process.env.DATABASE_URL) {
-      isServer = true;
-    }
-    const conString = process.env.DATABASE_URL;
-    console.log(conString);
-    const client = new Client({ conString, ssl: isServer });
-    await client.connect();
-    var dbRes = await client.query(
-      "SELECT Id, Name, AccountNumber FROM salesforce.account;"
-    );
-    res.render("db", {
-      results: dbRes.rows
+    const connectionString = process.env.DATABASE_URL;
+    const client = new Client({
+      connectionString: connectionString
     });
-    await client.end();
+    client.connect();
+    client.query(
+      "SELECT Id, Name, AccountNumber FROM salesforce.account",
+      (err, res) => {
+        console.log(err, res);
+        client.end();
+      }
+    );
   } catch (err) {
     console.log(err);
   }
