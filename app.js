@@ -28,7 +28,8 @@ function callDb(res) {
     client.query(
       "SELECT Id, Name, AccountNumber FROM salesforce.account",
       (err, dbRes) => {
-        console.log(err, res);
+        console.log(err, dbRes);
+        console.log(dbRes.rows);
         res.render("db", {
           results: dbRes.rows
         });
