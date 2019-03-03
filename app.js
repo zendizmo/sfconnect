@@ -20,11 +20,11 @@ app.get("/db", (req, res) => {
 });
 
 async function getDetails() {
-  var dbOpts = {
-    connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
-    ssl: true
-  };
-  const client = new Client(dbOpts);
+  // var dbOpts = {
+  //   connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
+  //   ssl: true
+  // };
+  const client = new Client(process.env.DATABASE_URL);
   await client.connect();
   const res = await client.query(
     "SELECT Id, Name, AccountNumber FROM salesforce.accounts;",
