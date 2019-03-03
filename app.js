@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const config = require("./config/database");
-const { Client } = require("pg");
+const pg = require("pg");
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -16,34 +16,29 @@ const accounts = require("./routes/accounts");
 app.use("/api/accounts", accounts);
 
 app.get("/db", (req, res) => {
+  callDbAsync(res);
+});
+
+async function callDbAsync(res) {
   try {
-    // connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL,
-      ssl: true
-    });
-
-    client.connect();
-    client.query(
-      "SELECT Id, Name, AccountNumber FROM salesforce.accounts;",
-      (err, dbRes) => {
-        if (err) {
-          throw err;
-        }
-        console.log(dbRes.rows);
-        res.render("db", {
-          results: dbRes.rows
-        });
-
-        client.end();
-      }
+    let isServer = false;
+    if (process.env.DATABASE_URL) {
+      isServer = true;
+    }
+    const conString = process.env.DATABASE_URL || config.DATABASE_URL;
+    const client = new pg.Client({ conString, ssl: isServer });
+    await client.connect();
+    var dbRes = await client.query(
+      "SELECT Id, Name, AccountNumber FROM salesforce.account"
     );
-
-    client.end();
+    res.render("db", {
+      results: dbRes.rows
+    });
+    await client.end();
   } catch (err) {
     console.log(err);
   }
-});
+}
 
 app.get("**", function(req, res) {
   res.render("error");
