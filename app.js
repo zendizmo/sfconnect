@@ -16,17 +16,9 @@ const accounts = require("./routes/accounts");
 app.use("/api/accounts", accounts);
 
 app.get("/db", (req, res) => {
-  getDetails();
-});
-
-async function getDetails() {
-  // var dbOpts = {
-  //   connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
-  //   ssl: true
-  // };
   const client = new Client(process.env.DATABASE_URL);
-  await client.connect();
-  const res = await client.query(
+  client.connect();
+  client.query(
     "SELECT Id, Name, AccountNumber FROM salesforce.accounts;",
     (err, dbRes) => {
       if (err) throw err;
@@ -39,8 +31,8 @@ async function getDetails() {
     }
   );
 
-  await client.end();
-}
+  client.end();
+});
 
 app.get("**", function(req, res) {
   res.render("error");
