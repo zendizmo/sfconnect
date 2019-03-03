@@ -16,22 +16,33 @@ const accounts = require("./routes/accounts");
 app.use("/api/accounts", accounts);
 
 app.get("/db", (req, res) => {
-  const client = new Client(process.env.DATABASE_URL);
-  client.connect();
-  client.query(
-    "SELECT Id, Name, AccountNumber FROM salesforce.accounts;",
-    (err, dbRes) => {
-      if (err) throw err;
+  try {
+    // connectionString: process.env.DATABASE_URL || config.DATABASE_URL,
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL,
+      ssl: true
+    });
 
-      res.render("db", {
-        results: dbRes.rows
-      });
+    client.connect();
+    client.query(
+      "SELECT Id, Name, AccountNumber FROM salesforce.accounts;",
+      (err, dbRes) => {
+        if (err) {
+          throw err;
+        }
+        console.log(dbRes.rows);
+        res.render("db", {
+          results: dbRes.rows
+        });
 
-      client.end();
-    }
-  );
+        client.end();
+      }
+    );
 
-  client.end();
+    client.end();
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.get("**", function(req, res) {
