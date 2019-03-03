@@ -17,6 +17,8 @@ app.get("**", function(req, res) {
   res.render("error");
 });
 
-app.listen(3000, function() {
-  console.log("CRMOD API listening on port 3000!");
+const port = process.env.PORT || 8080;
+
+app.listen(port, function() {
+  console.log(`CRMOD API listening on port ${port}!`);
 });
