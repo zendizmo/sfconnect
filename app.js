@@ -7,10 +7,9 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.get("/", function(req, res) {
-//   res.render("index");
-// });
-
+/* Default route - Home page
+   Passing title, nav variables to index.ejs
+*/
 app.get("/", function(req, res) {
   res.render("index.ejs", {
     title: "Home",
@@ -18,12 +17,21 @@ app.get("/", function(req, res) {
   });
 });
 
+/* Home page Route ( same as default route)
+   Passing title, nav variables to index.ejs
+*/
+
 app.get("/home", function(req, res) {
   res.render("index.ejs", {
     title: "Home",
     nav: ["Home", "Account", "Contact"]
   });
 });
+
+/* Accounts route
+   When deployed on Heroku, this will connect to postgres sql defined under "Settings=>Config Vars=>DATABASE_URL"
+   Passing title, nav, database query result variables to account.ejs
+*/
 
 app.get("/account", function(req, res) {
   try {
@@ -50,6 +58,11 @@ app.get("/account", function(req, res) {
   }
 });
 
+/* Contacts route
+    When deployed on Heroku, this will connect to postgres sql defined under "Settings=>Config Vars=>DATABASE_URL"
+   Passing title, nav, database query result variables to contact.ejs
+*/
+
 app.get("/contact", function(req, res) {
   try {
     const connectionString = process.env.DATABASE_URL;
@@ -74,35 +87,6 @@ app.get("/contact", function(req, res) {
     console.log(err);
   }
 });
-
-const accounts = require("./routes/accounts");
-app.use("/api/accounts", accounts);
-
-app.get("/db", (req, res) => {
-  callDb(res);
-});
-function callDb(res) {
-  try {
-    const connectionString = process.env.DATABASE_URL;
-    const client = new Client({
-      connectionString: connectionString
-    });
-    client.connect();
-    client.query(
-      "SELECT Id, Name, AccountNumber FROM salesforce.account",
-      (err, dbRes) => {
-        console.log(err, dbRes);
-        console.log(dbRes.rows);
-        res.render("db", {
-          results: dbRes.rows
-        });
-        client.end();
-      }
-    );
-  } catch (err) {
-    console.log(err);
-  }
-}
 
 app.get("**", function(req, res) {
   res.render("error");
