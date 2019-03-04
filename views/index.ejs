@@ -1,35 +1,43 @@
 <html>
 
 <head>
-    <link href="/css/style.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="css/stickyfooter.css" rel="stylesheet">
 </head>
 
 <body>
-    <div>
-        <h1>
+    <%- include navbar.ejs %>
+    <br>
+    <div class="container">
+        <h3>
             <%= title %>
-        </h1>
-        <ul>
-            <% for (var i=0; i<nav.length;i++) {%>
+        </h3>
+    </div>
+    <br>
+    <div class="container">
+        <h4>Connecting Salesforce to your custom apps is easy.</h4>
+        <ul class="list-group">
+            <li class="list-group-item">
+                Create your express node js app. (like this)
+            </li>
+            <li class="list-group-item">
+                Create a node js project on heroku cloud. Push your node js app to the the project.
 
-            <li><a href="/<%=nav[i]%>">
-                    <%=nav[i]%> </a></li>
-            &nbsp;
-            <% } %>
+            </li>
+            <li class="list-group-item">
+                Add Postgres and Heroku connect (for salesforce) addons to the project.
+            </li>
+            <li class="list-group-item">
+                Integrate your sales force account to postgres using heroku connect. Map your desired objects.
+            </li>
         </ul>
     </div>
 
-    <br>
-    <h3>Node.js</h3>
-    <p class='just'>Express is agnostic as to which templating language you use. Templating languages can be a hot
-        topic of debate.Here Iam going to use Jade.</p>
-    <p class='just'>Again Express is agnostic to what you use to generate your CSS-you can use vanilla CSS but for this
-        example I'm using Stylus.
-    </p>
-    <footer>
-        Running on node with express and ejs
-    </footer>
-    </home>
+
+
+    <%- include footer.ejs %>
+
+</body>
 
 </html>

@@ -15,14 +15,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", function(req, res) {
   res.render("index.ejs", {
     title: "Home",
-    nav: ["Home", "Accounts", "Contacts"]
+    nav: ["Home", "Account", "Contact"]
   });
 });
 
 app.get("/home", function(req, res) {
   res.render("index.ejs", {
     title: "Home",
-    nav: ["Home", "Accounts", "Contacts"]
+    nav: ["Home", "Account", "Contact"]
   });
 });
 
@@ -40,7 +40,7 @@ app.get("/account", function(req, res) {
         console.log(dbRes.rows);
         res.render("account.ejs", {
           title: "Account",
-          nav: ["Home", "Accounts", "Contacts"],
+          nav: ["Home", "Account", "Contact"],
           results: dbRes.rows
         });
         client.end();
@@ -65,7 +65,7 @@ app.get("/contact", function(req, res) {
         console.log(dbRes.rows);
         res.render("contact.ejs", {
           title: "Contact",
-          nav: ["Home", "Accounts", "Contacts"],
+          nav: ["Home", "Account", "Contact"],
           results: dbRes.rows
         });
         client.end();
