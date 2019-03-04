@@ -1,8 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const config = require("./config/database");
-const { Pool, Client } = require("pg");
+const { Client } = require("pg");
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
