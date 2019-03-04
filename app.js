@@ -59,7 +59,7 @@ app.get("/contact", function(req, res) {
     });
     client.connect();
     client.query(
-      "SELECT name, email, title, description FROM salesforce.contact",
+      "SELECT name, email, title, phone FROM salesforce.contact",
       (err, dbRes) => {
         console.log(err, dbRes);
         console.log(dbRes.rows);

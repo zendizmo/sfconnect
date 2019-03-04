@@ -16,14 +16,22 @@
             <h3 align="center">Your Saleforce Accounts</h3>
 
             <ul class="list-group">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <strong>Account Name</strong>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        Account Number
+                    </div>
+                </div>
                 <% results.forEach(function(r) { %>
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
-                            <%= r.name %></strong>
+                            <%= r.name %>
                         </div>
                         <div class="col-md-6 col-sm-6">
-                            <%= r.accountnumber %></small>
+                            <%= r.accountnumber %>
                         </div>
                     </div>
                 </li>
@@ -33,6 +41,8 @@
     </div>
 
     <%- include footer.ejs %>
-    </home>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</body>
 
 </html>
